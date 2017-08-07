@@ -4,10 +4,14 @@ import deindent from 'de-indent'
 import { parseHTML } from 'compiler/parser/html-parser'
 import { makeMap } from 'shared/util'
 
+// 换行正则表达式
 const splitRE = /\r?\n/g
+
 const replaceRE = /./g
+// 判断是否是script,style,template标签
 const isSpecialTag = makeMap('script,style,template', true)
 
+//预先定义对象类型Attribute
 type Attribute = {
   name: string,
   value: string
@@ -15,10 +19,12 @@ type Attribute = {
 
 /**
  * Parse a single-file component (*.vue) file into an SFC Descriptor Object.
+ * 将vue文件
  */
 export function parseComponent (
   content: string,
   options?: Object = {}
+  // 自定义类型SFCDescriptor，在flow/compiler中
  ): SFCDescriptor {
   const sfc: SFCDescriptor = {
     template: null,
@@ -27,6 +33,7 @@ export function parseComponent (
     customBlocks: []
   }
   let depth = 0
+  // 当前处理的代码块
   let currentBlock: ?(SFCBlock | SFCCustomBlock) = null
 
   function start (
@@ -41,6 +48,7 @@ export function parseComponent (
         type: tag,
         content: '',
         start: end,
+        // 将[{"name":'..',"value":".."}...] 换成 {name : value,...}形式
         attrs: attrs.reduce((cumulated, { name, value }) => {
           cumulated[name] = value || true
           return cumulated
@@ -48,12 +56,14 @@ export function parseComponent (
       }
       if (isSpecialTag(tag)) {
         checkAttrs(currentBlock, attrs)
+        // 判断是否是style标签 （一个sfc中可以有多个style）
         if (tag === 'style') {
           sfc.styles.push(currentBlock)
         } else {
           sfc[tag] = currentBlock
         }
       } else { // custom blocks
+        // 不是特殊字符表亲，按自定义标签处理
         sfc.customBlocks.push(currentBlock)
       }
     }
@@ -65,6 +75,7 @@ export function parseComponent (
   function checkAttrs (block: SFCBlock, attrs: Array<Attribute>) {
     for (let i = 0; i < attrs.length; i++) {
       const attr = attrs[i]
+      // css预处理语法设置
       if (attr.name === 'lang') {
         block.lang = attr.value
       }
