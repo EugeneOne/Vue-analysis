@@ -4,6 +4,7 @@ import { isServerRendering } from 'core/util/env'
 
 initGlobalAPI(Vue)
 
+// 判断是否在服务端运行
 Object.defineProperty(Vue.prototype, '$isServer', {
   get: isServerRendering
 })

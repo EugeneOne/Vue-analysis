@@ -18,15 +18,14 @@ import {
 } from '../util/index'
 
 /**
- * 
- * GlobalAPI：flow是一个 JAVASCRIPT 静态类型检测器
- *  ：用于变量检测
+ * 初始化vue全局配置
  */ 
 export function initGlobalAPI (Vue: GlobalAPI) {
   // config
   const configDef = {}
   configDef.get = () => config
   if (process.env.NODE_ENV !== 'production') {
+    // 不可直接给vue.config赋值，否则会warn提醒
     configDef.set = () => {
       warn(
         'Do not replace the Vue.config object, set individual fields instead.'
@@ -38,15 +37,27 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // exposed util methods.
   // NOTE: these are not considered part of the public API - avoid relying on
   // them unless you are aware of the risk.
+  // 这些不是公用api，慎用
   Vue.util = {
     warn,
     extend,
     mergeOptions,
     defineReactive
   }
-
+  /**
+   * https://cn.vuejs.org/v2/api/?#Vue-set-target-key-value
+   * 用于设置对象的属性（不可添加根级属性）
+   */ 
   Vue.set = set
+  /**
+   * https://cn.vuejs.org/v2/api/?#Vue-delete-target-key
+   * 删除对象的属性
+   */ 
   Vue.delete = del
+  /**
+   * https://cn.vuejs.org/v2/api/?#Vue-nextTick-callback-context
+   * DOM更行后执行回调
+   */ 
   Vue.nextTick = nextTick
 
   Vue.options = Object.create(null)

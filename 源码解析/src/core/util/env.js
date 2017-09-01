@@ -1,10 +1,12 @@
 /* @flow */
 /* globals MutationObserver */
+/* 全局监听 */ 
 
 import { noop } from 'shared/util'
 import { handleError } from './error'
 
 // can we use __proto__?
+// 判断是否可以用 __proto__
 export const hasProto = '__proto__' in {}
 
 // Browser environment sniffing
@@ -18,6 +20,8 @@ export const isIOS = UA && /iphone|ipad|ipod|ios/.test(UA)
 export const isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge
 
 // Firefix has a "watch" function on Object.prototype...
+// 火狐浏览器中有个watch方法，
+// 监视一个对象的某个属性是否发生变化,在该属性变化时立即触发指定的回调函数.
 export const nativeWatch = ({}).watch
 
 export let supportsPassive = false

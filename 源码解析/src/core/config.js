@@ -9,6 +9,7 @@ import {
 import { LIFECYCLE_HOOKS } from 'shared/constants'
 
 //flow用户检测变量类型
+// vue全局配置属性
 export type Config = {
   // user
   optionMergeStrategies: { [key: string]: Function };
