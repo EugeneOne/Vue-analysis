@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="./dist/debug/vue-test.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="someStr">
+        <input type="text" v-model="child.someStr">
+        <p>{{someStr}}</p>
+    </div>
+</body>
+<script>
+    var vm = new Vues({
+        el: '#app',
+        data: {
+            a: 1,
+            b: 2,
+            someStr: 'hello ',
+            child: {
+                someStr: 'World !'
+            }
+        }
+    })
+
+    console.log(vm)
+</script>
+
+</html>
